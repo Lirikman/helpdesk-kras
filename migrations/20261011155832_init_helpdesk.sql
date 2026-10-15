@@ -68,17 +68,10 @@ CREATE TABLE router_access (
 CREATE TABLE router_queues (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     router_id BIGINT NOT NULL REFERENCES routers(id) ON DELETE RESTRICT,
-    queue_type VARCHAR(30) NOT NULL
-        CHECK (
-            queue_type IN (
-                'simple_queue',
-                'queue_tree'
-            )
-        ),
     name VARCHAR(150) NOT NULL,
     last_synced_at TIMESTAMPTZ,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
-    CONSTRAINT uq_router_queue UNIQUE (router_id, queue_type, name),
+    CONSTRAINT uq_router_queue UNIQUE (router_id, name),
     CONSTRAINT uq_router_queue_id_router UNIQUE (id, router_id),
     CONSTRAINT chk_router_queue_name CHECK (LENGTH(TRIM(name)) > 0)
 );
